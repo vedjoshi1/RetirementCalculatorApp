@@ -20,13 +20,14 @@ class ViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var yearsInRetirement: UITextField!
     @IBOutlet weak var preTaxRateField: UITextField!
     
-    let INFLATIONRATE = 0.024;
+   let INFLATIONRATE = 0.024;
     
-   // let INFLATIONRATE = 0.02; ONLY FOR TESTING THIS IS NOWHERE NEAR ACCURATE
+  
+    //ONLY FOR TESTING THIS IS NOWHERE NEAR ACCURATE
+ //   let INFLATIONRATE = 0.02;
     
     
-    
-    
+    //This is the line graph
     lazy var lineChartView: LineChartView = {
         let chartVieww = LineChartView();
         //do line chart modifications here, like color and basic stuff
@@ -49,8 +50,8 @@ class ViewController: UIViewController, ChartViewDelegate {
     }
     
     
-    
-    func makeLineGraph(){
+    //This makes the line graph
+    func makeLineGraph(intarr:  ([Int], [Int])){
         chartView.addSubview(lineChartView)
         
         
@@ -58,17 +59,22 @@ class ViewController: UIViewController, ChartViewDelegate {
         
         lineChartView.width(to: chartView);
         lineChartView.height(to: chartView);
-        setData()
+        setData(boom: intarr.1)
         
         
     }
     
+    
+    //just a delegate function, nothing here YET
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        print(entry)
+     //   print(entry)
     }
     
-    func setData(){
-        
+    
+    
+    //THis sets the data for the line graph, and will need a LOT more stuff
+    func setData(boom: [Int]){
+        let yValues = generateValuesForGraph(nums: boom)
         let set1 = LineChartDataSet(entries: yValues, label: "Dollar")
         let data = LineChartData(dataSet: set1);
         lineChartView.data = data;
@@ -77,27 +83,40 @@ class ViewController: UIViewController, ChartViewDelegate {
         
         
     }
-    let yValues: [ChartDataEntry] = [
-        ChartDataEntry(x:1.0, y:5.0),
-        
-            ChartDataEntry(x:2.0, y:4.0),
-        
-            ChartDataEntry(x:3.0, y:5.6),
-        
-            ChartDataEntry(x:4.0, y:12.0)
+    //I'd argue that this is self-explanatory
+    func generateValuesForGraph(nums: [Int]) -> [ChartDataEntry]{
+        //This is the values for the line graph, they will be moved to a function
+        var yValues: [ChartDataEntry] = []
         
         
-    ]
-    
-    
-    func generateTable(){
-        let rate = 0.048
-        let years = 45
-        let monthly = 6000;
+        var i = 1.0;
+        for count in nums {
+            yValues.append(ChartDataEntry(x:i, y:Double(count)));
+            
+            i+=1;
+            
+        }
+        
+        return yValues
+    }
+    //This generates both of the tables needed for the line graph
+    func generateTable(corpus: Int, prate: Double, years: Int, monthly: Int)-> ([Int], [Int]){
+   
+        
+        let rate = 0.8*prate
+        
+        
         let yearly = monthly*12;
         var retirementPay = [Int]()
+        var corpusArr = [Int]()
+        
+        
+        
         var i = 1;
         retirementPay.append(yearly);
+        let firstCorpus = (Double(corpus - yearly) * (1.0 + rate))
+        corpusArr.append(Int(firstCorpus));
+        
         while(i <= years){
             let payDouble = ( Double(retirementPay[retirementPay.count - 1])  * (INFLATIONRATE + 1.0))
             
@@ -106,16 +125,33 @@ class ViewController: UIViewController, ChartViewDelegate {
             
             retirementPay.append(Int(payInt))
             
-            i+=1;
+            
+            let corpusValuePostLoss = ( corpusArr[corpusArr.count - 1] - retirementPay[retirementPay.count-1])
+            let corpusEndValueDouble = Double(corpusValuePostLoss) * (1+rate)
+            
+            
+            
+            let corpusInt = corpusEndValueDouble.rounded();
+            if(corpusInt > 0){
+            
+                corpusArr.append(Int(corpusInt))
+            
+            
+                i+=1;
+               // print(i)
+            }else{
+                break;
+                
+            }
         }
 
         
+    //    print(retirementPay)
+        
+  //      print(corpusArr)
         
         
-        
-        
-        
-        
+        return (retirementPay, corpusArr)
         
     }
     
@@ -127,7 +163,7 @@ class ViewController: UIViewController, ChartViewDelegate {
     
     
     
-    
+    //This gets the Effective Rate of Return
     func getEffectiveROR(preTax:Double) -> Double{
         let posh = 0.8*preTax
         let pos = posh/100
@@ -139,35 +175,48 @@ class ViewController: UIViewController, ChartViewDelegate {
         
     }
     
+    
+    
+    //THIS GUY KICKS EVERYTHING OFF!!!!
+    //THE BIG BOY
+    //This is called when the button is pressed
     @IBAction func getValue(_ sender: Any) {
         
-        getPV();
+        let bigCorpusAmount = getPV();
         
-        makeLineGraph();
+        
+        let bigNum = generateTable(corpus: bigCorpusAmount.0, prate: bigCorpusAmount.3, years: bigCorpusAmount.1, monthly: bigCorpusAmount.2)
+        
+        makeLineGraph(intarr: bigNum);
         
     }
-    func getPV(){
+    
+    
+    //Gets the text and stuff for the big total corpus value amount
+    func getPV()->(Int, Int, Int, Double){
         let preTaxRate :Double? = Double(preTaxRateField.text!)
-        
+   
         let add = getEffectiveROR(preTax:preTaxRate ?? 0);
         
         let years : Int? = Int(yearsInRetirement.text!);
         let month : Int? =  Int(monthlyExpenses.text!);
+     //   print("MONTHMONTHMONTH" )
+   //     print(month)
         let monthly = 12 * (month ?? 0)
-        presentValue(rate: add, numberOfPeriod: years ?? 0, payment: -(monthly ?? 0));
+        return (presentValue(rate: add, numberOfPeriod: years ?? 0, payment: -(monthly ?? 0)), years ?? 0, month ?? 0  ,  (preTaxRate ?? 0) / 100)
         
         
         
     }
     
-    
-    func presentValue(rate:Double, numberOfPeriod: Int, payment: Int){
+    //this finds the big total corpus value amount
+    func presentValue(rate:Double, numberOfPeriod: Int, payment: Int)->Int{
         
         let t = true;
         let r1 = rate + 1;
         let retval = ((1 - (pow(r1, Double(numberOfPeriod)))) / (rate) )
         var retval2 = 0.0;
-        print(retval)
+    //    print(retval)
 
 
         if(t){
@@ -190,7 +239,7 @@ class ViewController: UIViewController, ChartViewDelegate {
         value = value.rounded();
         let intValue = Int(value)
         totalLabel.text = String(intValue.withCommas())
-        
+        return intValue
     }
 
 }

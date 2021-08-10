@@ -17,6 +17,7 @@
 		583344C726785A8E00E0DC3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 583344C526785A8E00E0DC3B /* LaunchScreen.storyboard */; };
 		583344D226785A8F00E0DC3B /* RetirementCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583344D126785A8F00E0DC3B /* RetirementCalculatorTests.swift */; };
 		583344DD26785A8F00E0DC3B /* RetirementCalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 583344DC26785A8F00E0DC3B /* RetirementCalculatorUITests.swift */; };
+		584FC17926C2E0D000BF364A /* MathHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = 584FC17826C2E0D000BF364A /* MathHelper.c */; };
 		5857E658269EA35800B7FD35 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5857E656269EA35800B7FD35 /* TextFieldTableViewCell.swift */; };
 		5857E659269EA35800B7FD35 /* TextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5857E657269EA35800B7FD35 /* TextFieldTableViewCell.xib */; };
 		58DF562326BDF0FE007F896A /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DF562226BDF0FE007F896A /* Int.swift */; };
@@ -62,6 +63,9 @@
 		583344D826785A8F00E0DC3B /* RetirementCalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RetirementCalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		583344DC26785A8F00E0DC3B /* RetirementCalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetirementCalculatorUITests.swift; sourceTree = "<group>"; };
 		583344DE26785A8F00E0DC3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		584FC17626C2E0CF00BF364A /* RetirementCalculator-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RetirementCalculator-Bridging-Header.h"; sourceTree = "<group>"; };
+		584FC17726C2E0D000BF364A /* MathHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MathHelper.h; sourceTree = "<group>"; };
+		584FC17826C2E0D000BF364A /* MathHelper.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = MathHelper.c; sourceTree = "<group>"; };
 		5857E656269EA35800B7FD35 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		5857E657269EA35800B7FD35 /* TextFieldTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldTableViewCell.xib; sourceTree = "<group>"; };
 		58DF562226BDF0FE007F896A /* Int.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
@@ -172,9 +176,12 @@
 			children = (
 				5857E656269EA35800B7FD35 /* TextFieldTableViewCell.swift */,
 				5857E657269EA35800B7FD35 /* TextFieldTableViewCell.xib */,
+				584FC17726C2E0D000BF364A /* MathHelper.h */,
+				584FC17826C2E0D000BF364A /* MathHelper.c */,
 				58DF562226BDF0FE007F896A /* Int.swift */,
 				58F89F7326AA0E1400EEBD8C /* BoringTableViewCell.swift */,
 				58F89F7426AA0E1400EEBD8C /* BoringTableViewCell.xib */,
+				584FC17626C2E0CF00BF364A /* RetirementCalculator-Bridging-Header.h */,
 			);
 			path = "Other Code FIles";
 			sourceTree = "<group>";
@@ -274,6 +281,7 @@
 				TargetAttributes = {
 					583344B626785A8B00E0DC3B = {
 						CreatedOnToolsVersion = 12.5;
+						LastSwiftMigration = 1250;
 					};
 					583344CC26785A8F00E0DC3B = {
 						CreatedOnToolsVersion = 12.5;
@@ -449,6 +457,7 @@
 				583344BD26785A8C00E0DC3B /* SceneDelegate.swift in Sources */,
 				580188E126894E82002E5C44 /* MonthlyExpenseCalculatorViewController.swift in Sources */,
 				5857E658269EA35800B7FD35 /* TextFieldTableViewCell.swift in Sources */,
+				584FC17926C2E0D000BF364A /* MathHelper.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -625,6 +634,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = RetirementCalculator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -634,6 +644,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ved.RetirementCalculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RetirementCalculator/Other Code FIles/RetirementCalculator-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -645,6 +657,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = RetirementCalculator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -654,6 +667,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ved.RetirementCalculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RetirementCalculator/Other Code FIles/RetirementCalculator-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
